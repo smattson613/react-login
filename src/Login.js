@@ -10,7 +10,7 @@ const Login = () => {
   const errRef = useRef();
 
   const [user, setUser] = useState('');
-  const [pwd, setPwd] = useState('');
+  const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
 
@@ -20,14 +20,14 @@ const Login = () => {
 
   useEffect(() => {
     setErrMsg('');
-  }, [user, pwd])
+  }, [user, password])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try{
       const response = await axios.post(LOGIN_URL,
-        JSON.stringify({ user, pwd }),
+        JSON.stringify({ user: user, pwd: password }),
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true
@@ -37,9 +37,9 @@ const Login = () => {
 
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
-      setAuth({ user, pwd, roles, accessToken })
+      setAuth({ user, pwd: password, roles, accessToken })
       setUser('');
-      setPwd('');
+      setPassword('');
       setSuccess(true);
     } catch (err) {
       if (!err?.response) {
@@ -85,8 +85,8 @@ const Login = () => {
             <input
               type="password"
               id="password"
-              onChange={(e) => setPwd(e.target.value)}
-              value={pwd}
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
               required
             />
             <button>Sign In</button>
